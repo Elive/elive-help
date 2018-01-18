@@ -42,6 +42,7 @@ main(){
 
     # }}}
     # args {{{
+
     if [[ -n "$1" ]] ; then
         for arg in "$@"
         do
@@ -51,6 +52,12 @@ main(){
                     ;;
                 --userguide)
                     is_guide_mode=1
+                    ;;
+                --fs)
+                    is_mode_fullscreen=1
+                    ;;
+                --nofs|--nofullscreen)
+                    is_mode_fullscreen=0
                     ;;
                 --all)
                     is_hotkeys_mode=1
@@ -69,20 +76,22 @@ main(){
         evince -w "/usr/share/elive-help/hotkeys/en/hotkeys.pdf"
 
         # maximize the window
-        for i in $( seq 6 )
-        do
-            sleep 1
-            window_id="$( enlightenment_remote -window-list | grep "^evince-previewer" | awk '{print $2}' )"
-            if [[ -n "$window_id" ]] ; then
-                if [[ "$( echo "$window_id" | wc -w )" -gt 1 ]] ; then
-                    # more than one window, do not do anything on this case
+        if ((is_mode_fullscreen)) ; then
+            for i in $( seq 6 )
+            do
+                sleep 1
+                window_id="$( enlightenment_remote -window-list | grep "^evince-previewer" | awk '{print $2}' )"
+                if [[ -n "$window_id" ]] ; then
+                    if [[ "$( echo "$window_id" | wc -w )" -gt 1 ]] ; then
+                        # more than one window, do not do anything on this case
+                        break
+                    fi
+                    # maximize and exit
+                    enlightenment_remote -window-maximize "$window_id"
                     break
                 fi
-                # maximize and exit
-                enlightenment_remote -window-maximize "$window_id"
-                break
-            fi
-        done
+            done
+        fi
     fi
 
     # guide
