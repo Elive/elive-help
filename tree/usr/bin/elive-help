@@ -37,10 +37,42 @@ echo "$$" > "$lockfile"
 
 main(){
     # pre {{{
-    local var
+    local arg
+
 
     # }}}
-    evince -w "/usr/share/elive-help/hotkeys/en/hotkeys.pdf"
+    # args {{{
+    if [[ -n "$1" ]] ; then
+        for arg in "$@"
+        do
+            case "$arg" in
+                --hotkeys)
+                    is_hotkeys_mode=1
+                    ;;
+                --userguide)
+                    is_guide_mode=1
+                    ;;
+                --all)
+                    is_hotkeys_mode=1
+                    is_guide_mode=1
+                    ;;
+            esac
+        done
+    else
+        is_hotkeys_mode=1
+        is_guide_mode=1
+    fi
+    # - args }}}
+
+    # hotkeys
+    if ((is_hotkeys_mode)) ; then
+        evince -w "/usr/share/elive-help/hotkeys/en/hotkeys.pdf"
+    fi
+
+    # guide
+    if ((is_guide_mode)) ; then
+        zenity --warning --text="Guide is not writed yet, please donate to Elive to support this project and finish the User Guide"
+    fi
 
     # check for possible updates
     if el_package_newer_check "elive-help" ; then
