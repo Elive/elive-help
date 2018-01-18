@@ -43,15 +43,21 @@ main(){
     # }}}
     # args {{{
 
+    # ugly hack, enable both by default
+    is_hotkeys_mode=1
+    is_guide_mode=1
+
     if [[ -n "$1" ]] ; then
         for arg in "$@"
         do
             case "$arg" in
                 --hotkeys)
                     is_hotkeys_mode=1
+                    is_guide_mode=0
                     ;;
                 --userguide)
                     is_guide_mode=1
+                    is_hotkeys_mode=0
                     ;;
                 --fs)
                     is_mode_fullscreen=1
@@ -59,15 +65,12 @@ main(){
                 --nofs|--nofullscreen)
                     is_mode_fullscreen=0
                     ;;
-                --all)
-                    is_hotkeys_mode=1
-                    is_guide_mode=1
-                    ;;
+                #--all)
+                    #is_hotkeys_mode=1
+                    #is_guide_mode=1
+                    #;;
             esac
         done
-    else
-        is_hotkeys_mode=1
-        is_guide_mode=1
     fi
     # - args }}}
 
