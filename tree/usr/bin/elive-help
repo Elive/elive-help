@@ -87,7 +87,7 @@ main(){
 
     # guide
     if ((is_guide_mode)) ; then
-        zenity --warning --text="Guide is not writed yet, please donate to Elive to support this project and finish the User Guide"
+        zenity --warning --text="The Elive User Guide is not writed yet, please donate to Elive to support this project and finish the Documentation"
     fi
 
     # check for possible updates
