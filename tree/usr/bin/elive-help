@@ -104,7 +104,7 @@ main(){
 
     # check for possible updates
     if el_package_newer_check "elive-help" ; then
-        if el_package_update_last_version "elive-help" ; then
+        if el_package_update_last_version --force "elive-help" ; then
             true
             #zenity --info --text="Elive Help has been updated to the last version"
         fi
