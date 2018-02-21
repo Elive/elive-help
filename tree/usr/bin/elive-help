@@ -76,7 +76,9 @@ main(){
 
     # hotkeys
     if ((is_hotkeys_mode)) ; then
-        evince -w "/usr/share/elive-help/hotkeys/en/hotkeys.pdf"
+        # the previewer mode looks with an ugly icon and also you cannot scroll pages down with the mouse wheel
+        #evince -w "/usr/share/elive-help/hotkeys/en/hotkeys.pdf"
+        evince "/usr/share/elive-help/hotkeys/en/hotkeys.pdf"
 
         # maximize the window
         if ((is_mode_fullscreen)) ; then
@@ -99,7 +101,12 @@ main(){
 
     # guide
     if ((is_guide_mode)) ; then
-        zenity --warning --text="The Elive User Guide is not writed yet, please donate to Elive to support this project and finish the Documentation"
+        if ! el_flag check elive-help-guide-donation ; then
+            if zenity --question --text="The Elive User Guide is not writed yet, please donate to Elive to support this project and finish the Documentation. Make a donation?" ; then
+                web-launcher "http://www.elivecd.org/donate"
+            fi
+            el_flag add elive-help-guide-donation
+        fi
     fi
 
     # check for possible updates
