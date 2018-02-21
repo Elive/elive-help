@@ -54,16 +54,23 @@ main(){
                 --hotkeys)
                     is_hotkeys_mode=1
                     is_guide_mode=0
+                    shift
                     ;;
                 --userguide)
                     is_guide_mode=1
                     is_hotkeys_mode=0
+                    shift
                     ;;
                 --fs)
                     is_mode_fullscreen=1
+                    shift
                     ;;
                 --nofs|--nofullscreen)
                     is_mode_fullscreen=0
+                    shift
+                    ;;
+                -*)
+                    opts="$arg $opts"
                     ;;
                 #--all)
                     #is_hotkeys_mode=1
@@ -78,13 +85,14 @@ main(){
     if ((is_hotkeys_mode)) ; then
         # the previewer mode looks with an ugly icon and also you cannot scroll pages down with the mouse wheel
         #evince -w "/usr/share/elive-help/hotkeys/en/hotkeys.pdf"
-        evince "/usr/share/elive-help/hotkeys/en/hotkeys.pdf"
+        evince $opts "/usr/share/elive-help/hotkeys/en/hotkeys.pdf" &
 
         # maximize the window
         if ((is_mode_fullscreen)) ; then
-            for i in $( seq 6 )
+            for i in $( seq 24 )
             do
-                sleep 1
+                LC_ALL=C sleep 0.25
+
                 window_id="$( enlightenment_remote -window-list | grep "^evince-previewer" | awk '{print $2}' )"
                 if [[ -n "$window_id" ]] ; then
                     if [[ "$( echo "$window_id" | wc -w )" -gt 1 ]] ; then
@@ -107,6 +115,7 @@ main(){
             fi
             el_flag add elive-help-guide-donation
         fi
+        #evince $opts "/usr/share/elive-help/hotkeys/en/hotkeys.pdf"
     fi
 
     # check for possible updates
