@@ -47,6 +47,9 @@ main(){
     is_hotkeys_mode=1
     is_guide_mode=1
 
+    # if you use -w, make sure that there's an instruction in the bottom of the first page saying "press space to go to next page":wa
+    opts="-w"
+
     if [[ -n "$1" ]] ; then
         for arg in "$@"
         do
