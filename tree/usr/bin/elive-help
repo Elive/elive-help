@@ -121,15 +121,6 @@ main(){
         #evince $opts "/usr/share/elive-help/hotkeys/en/hotkeys.pdf"
     fi
 
-    # check for possible updates
-    # update: not needed, because we also depend of the same version of e17-conf, so better to update the system entirely
-    #if el_package_newer_check "elive-help" ; then
-        #if el_package_update_last_version --force "elive-help" ; then
-            #true
-            ##zenity --info --text="Elive Help has been updated to the last version"
-        #fi
-    #fi
-
 }
 
 #
