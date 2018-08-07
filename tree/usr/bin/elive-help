@@ -114,7 +114,7 @@ main(){
     if ((is_guide_mode)) ; then
         if ! el_flag check elive-help-guide-donation ; then
             if zenity --question --text="The Elive User Guide is not writed yet, but you can donate to support this project and finish the Documentation. Make a donation?" ; then
-                web-launcher "http://www.elivecd.org/donate"
+                web-launcher "https://www.elivecd.org/donate"
             fi
             el_flag add elive-help-guide-donation
         fi
