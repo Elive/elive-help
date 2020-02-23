@@ -95,7 +95,7 @@ main(){
         evince $opts "/usr/share/elive-help/hotkeys/en/hotkeys.pdf" 2>/dev/null &
 
         # get the window_id {{{
-        for i in $( seq 24 )
+        for i in $( seq 40 )
         do
             LC_ALL=C sleep 0.3
 
