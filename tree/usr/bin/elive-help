@@ -72,6 +72,10 @@ main(){
                     is_mode_fullscreen=0
                     shift
                     ;;
+                --iconify)
+                    is_mode_iconify=1
+                    shift
+                    ;;
                 -*)
                     opts="$arg $opts"
                     ;;
@@ -88,25 +92,62 @@ main(){
     if ((is_hotkeys_mode)) ; then
         # the previewer mode looks with an ugly icon and also you cannot scroll pages down with the mouse wheel
         #evince -w "/usr/share/elive-help/hotkeys/en/hotkeys.pdf"
-        evince $opts "/usr/share/elive-help/hotkeys/en/hotkeys.pdf" &
+        evince $opts "/usr/share/elive-help/hotkeys/en/hotkeys.pdf" 2>/dev/null &
 
-        # maximize the window
-        if ((is_mode_fullscreen)) ; then
-            for i in $( seq 24 )
-            do
-                LC_ALL=C sleep 0.25
+        # get the window_id {{{
+        for i in $( seq 24 )
+        do
+            LC_ALL=C sleep 0.3
 
-                window_id="$( enlightenment_remote -window-list | grep "^evince-previewer" | awk '{print $2}' )"
-                if [[ -n "$window_id" ]] ; then
-                    if [[ "$( echo "$window_id" | wc -w )" -gt 1 ]] ; then
-                        # more than one window, do not do anything on this case
-                        break
-                    fi
-                    # maximize and exit
-                    enlightenment_remote -window-maximize "$window_id"
+            if [[ "$EROOT" ]] ; then
+                window_id="$( eesh wl prop | grep evince-previewer | tail -1 | awk '{print $1}' )"
+            else
+                if [[ "$E_START" ]] ; then
+                    window_id="$( enlightenment_remote -window-list | grep "^evince-previewer" | awk '{print $2}' )"
+                else
+                    el_warning "Unkown WM, cannot get the window_id from elive-help"
                     break
                 fi
-            done
+            fi
+
+            # use window_id
+            if [[ -n "$window_id" ]] ; then
+                if [[ "$( echo "$window_id" | wc -w )" -gt 1 ]] ; then
+                    # more than one window, do not do anything on this case
+                    el_debug "more than one window_id found, ignoring: $window_id"
+                    unset window_id
+                fi
+
+                break
+            fi
+        done
+
+        # }}}
+
+        # maximize
+        if ((is_mode_fullscreen)) ; then
+            if [[ "$EROOT" ]] ; then
+                # maximize window
+                #eesh wop "$window_id" ts
+                eesh wop "$window_id" ts conservative
+            else
+                if [[ "$E_START" ]] ; then
+                    enlightenment_remote -window-maximize "$window_id"
+                fi
+            fi
+        fi
+
+        # iconify
+        if ((is_mode_iconify)) ; then
+            if [[ "$EROOT" ]] ; then
+                # wait a second so that the user see what happens
+                sleep 1
+                eesh wop "$window_id" iconify
+            else
+                if [[ "$E_START" ]] ; then
+                    enlightenment_remote -window-iconify "$window_id"
+                fi
+            fi
         fi
     fi
 
