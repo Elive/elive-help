@@ -86,4 +86,4 @@ Categories=Elive
 StartupNotify=true
 NoDisplay=false
 Icon=gnome-help
-Exec=elive-help --hotkeys
+Exec=elive-help --hotkeys --fs
