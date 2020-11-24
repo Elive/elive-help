@@ -143,7 +143,7 @@ main(){
         if ((is_mode_iconify)) ; then
             if [[ "$EROOT" ]] ; then
                 # wait a second so that the user see what happens
-                LC_ALL=C sleep 2
+                LC_ALL=C sleep 8
                 eesh wop "$window_id" iconify
             else
                 if [[ "$E_START" ]] ; then
