@@ -107,7 +107,7 @@ main(){
                 if [[ "$E_START" ]] ; then
                     window_id="$( enlightenment_remote -window-list | grep "^evince-previewer" | awk '{print $2}' )"
                 else
-                    el_warning "Unkown WM, cannot get the window_id from elive-help"
+                    el_warning "Unknown WM, cannot get the window_id from elive-help"
                     break
                 fi
             fi
