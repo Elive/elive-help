@@ -49,9 +49,6 @@ main(){
     is_hotkeys_mode=1
     is_guide_mode=1
 
-    # if you use -w, make sure that there's an instruction in the bottom of the first page saying "press space to go to next page":wa
-    opts="-w"
-
     if [[ -n "$1" ]] ; then
         for arg in "$@"
         do
@@ -78,6 +75,10 @@ main(){
                     is_mode_iconify=1
                     shift
                     ;;
+                --preview)
+                    # if you use -w, make sure that there's an instruction in the bottom of the first page saying "press space to go to next page":wa
+                    opts="-w $opts"
+                    ;;
                 -*)
                     opts="$arg $opts"
                     ;;
@@ -102,10 +103,10 @@ main(){
             LC_ALL=C sleep 0.3
 
             if [[ "$EROOT" ]] ; then
-                window_id="$( eesh wl prop | grep evince-previewer | tail -1 | awk '{print $1}' )"
+                window_id="$( eesh wl prop | grep -E "(evince-previewer|evince...Evince)" | tail -1 | awk '{print $1}' )"
             else
                 if [[ "$E_START" ]] ; then
-                    window_id="$( enlightenment_remote -window-list | grep "^evince-previewer" | awk '{print $2}' )"
+                    window_id="$( enlightenment_remote -window-list | grep -E "(^evince-previewer|Evince)" | tail -1 | awk '{print $2}' )"
                 else
                     el_warning "Unknown WM, cannot get the window_id from elive-help"
                     break
