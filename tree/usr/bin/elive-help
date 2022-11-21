@@ -132,7 +132,7 @@ main(){
             if [[ "$EROOT" ]] ; then
                 # maximize window
                 #eesh wop "$window_id" ts
-                eesh wop "$window_id" ts conservative
+                eesh wop $window_id ts conservative
             else
                 if [[ "$E_START" ]] ; then
                     enlightenment_remote -window-maximize "$window_id"
@@ -145,7 +145,7 @@ main(){
             if [[ "$EROOT" ]] ; then
                 # wait a second so that the user see what happens
                 LC_ALL=C sleep 8
-                eesh wop "$window_id" iconify
+                eesh wop $window_id iconify
             else
                 if [[ "$E_START" ]] ; then
                     enlightenment_remote -window-iconify "$window_id"
